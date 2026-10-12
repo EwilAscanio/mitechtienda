@@ -1,0 +1,1 @@
+export default function RatingStars({ rating }) { return <span className="inline-flex items-center gap-1 text-sm"><span className="text-amber-500" aria-label={`${rating} de 5 estrellas`}>★★★★★</span><span className="muted">{rating}</span></span>; }
