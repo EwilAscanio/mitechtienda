@@ -7,7 +7,7 @@ const money = (value) => new Intl.NumberFormat('es-VE', { style: 'currency', cur
 export async function POST(request) {
   try {
     if (!process.env.RESEND_API_KEY) return json({ error: 'El envío de correo no está configurado en el servidor.' }, 503);
-    if (!process.env.RESEND_FROM_EMAIL || !process.env.STORE_ORDER_EMAIL) return json({ error: 'Falta configurar el remitente o el correo de pedidos en el servidor.' }, 503);
+    if (!process.env.RESEND_FROM_EMAIL) return json({ error: 'Falta configurar el remitente verificado de correo en el servidor.' }, 503);
 
     const customer = await request.json();
     const required = ['name', 'email', 'phone', 'address', 'city', 'postal'];
@@ -48,7 +48,7 @@ export async function POST(request) {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const { data, error } = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL,
-      to: [process.env.STORE_ORDER_EMAIL],
+      to: [process.env.STORE_ORDER_EMAIL || 'ewilascanio@gmail.com'],
       replyTo: customer.email.trim(),
       subject: `Nuevo pedido ${orderNumber} — MiTech`,
       text: detail,
